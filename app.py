@@ -13,8 +13,7 @@ from reportlab.lib.utils import ImageReader
 np.random.seed(42)
 mesi = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"]
 costi = np.random.randint(80000, 120000, size=12)
-costi[5] = 200000  # Inseriamo un costo molto alto a Giugno per creare un'anomalia
-
+costi[5] = 200000  # Generiamo un'anomalia a Giugno
 ricavi = costi + np.random.randint(10000, 30000, size=12)
 
 df = pd.DataFrame({"Mese": mesi, "Costi": costi, "Ricavi": ricavi})
@@ -32,7 +31,19 @@ mesi_futuri = np.array([[13], [14], [15]])
 previsione = modello.predict(mesi_futuri)
 df_pred = pd.DataFrame({"Mese": ["Gen 2026", "Feb 2026", "Mar 2026"], "Costi Previsti": previsione.astype(int)})
 
-# Funzione per generare PDF con il grafico incluso
+# 📊 Creiamo il grafico e salviamolo come immagine
+def salva_grafico():
+    buf = BytesIO()
+    fig, ax = plt.subplots(figsize=(6, 3))
+    ax.plot(df["Mese"], df["Costi"], label="Costi Storici", marker="o")
+    ax.plot(["Gen 2026", "Feb 2026", "Mar 2026"], previsione, label="Previsione Costi", marker="x", linestyle="dashed")
+    ax.legend()
+    plt.savefig(buf, format="png")
+    plt.close(fig)
+    buf.seek(0)
+    return buf
+
+# 📝 Funzione per generare PDF con il grafico incluso
 def genera_pdf():
     buffer = BytesIO()
     c = canvas.Canvas(buffer, pagesize=letter)
@@ -67,6 +78,12 @@ def genera_pdf():
     for _, row in df_pred.iterrows():
         c.drawString(100, y_position, f"📌 {row['Mese']}: €{row['Costi Previsti']:,}")
         y_position -= 20
+
+    # Inseriamo il grafico nel PDF
+    y_position -= 100
+    img_buf = salva_grafico()
+    img = ImageReader(img_buf)
+    c.drawImage(img, 100, y_position, width=400, height=200)
 
     c.showPage()
     c.save()
