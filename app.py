@@ -13,6 +13,8 @@ from reportlab.lib.utils import ImageReader
 np.random.seed(42)
 mesi = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"]
 costi = np.random.randint(80000, 120000, size=12)
+costi[5] = 200000  # Inseriamo un costo molto alto a Giugno per creare un'anomalia
+
 ricavi = costi + np.random.randint(10000, 30000, size=12)
 
 df = pd.DataFrame({"Mese": mesi, "Costi": costi, "Ricavi": ricavi})
