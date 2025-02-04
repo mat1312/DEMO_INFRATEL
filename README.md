@@ -15,8 +15,8 @@ Questa dashboard interattiva, sviluppata con **Streamlit**, permette di:
 ## 🚀 Installazione
 1. Clonare la repo:
    ```sh
-   git clone https://github.com/tuo-username/DEMO_INFRATEL.git
-   cd nome-repo
+   git clone https://github.com/mat1312/DEMO_INFRATEL.git
+   cd DEMO_INFRATEL
    ```
 2. Installare le dipendenze:
    ```sh
