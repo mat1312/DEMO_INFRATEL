@@ -149,6 +149,14 @@ fig, ax = plt.subplots(figsize=(6, 3))
 ax.plot(df["Mese"], df["Costi"], label="Costi Storici", marker="o")
 ax.plot(["Gen 2026", "Feb 2026", "Mar 2026"], previsione, label="Previsione Costi", marker="x", linestyle="dashed")
 ax.legend()
+
+# Ruotiamo le etichette dell'asse X
+plt.xticks(rotation=45, ha="right")
+
+# Aggiungiamo spaziatura per evitare la sovrapposizione
+plt.subplots_adjust(bottom=0.2)
+
+plt.title("Previsione Costi Futuri")
 st.pyplot(fig)
 
 st.subheader("📄 Esportazione Report Audit")
@@ -189,6 +197,7 @@ fig, ax = plt.subplots(figsize=(6, 3))
 ax.plot(df_turnover["Mese"], df_turnover["Turnover"], label="Turnover Storico", marker="o")
 ax.axhline(y=soglia_turnover, color='r', linestyle='--', label=f"Soglia {soglia_turnover}%")
 ax.legend()
+
 plt.title("Turnover Mensile")
 st.pyplot(fig)
 
@@ -199,6 +208,12 @@ ax.plot(df_turnover["Mese"], df_turnover["Turnover"], label="Turnover Storico", 
 ax.plot(["Gen 2026", "Feb 2026", "Mar 2026"], previsione_turnover, label="Previsione Turnover", marker="x", linestyle="dashed")
 ax.axhline(y=soglia_turnover, color='r', linestyle='--', label=f"Soglia {soglia_turnover}%")
 ax.legend()
+# Ruotiamo le etichette dell'asse X per migliorare la leggibilità
+plt.xticks(rotation=45, ha="right")
+
+# Aggiungiamo spaziatura per evitare la sovrapposizione
+plt.subplots_adjust(bottom=0.2)
+
 plt.title("Previsione Turnover")
 st.pyplot(fig)
 
