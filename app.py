@@ -80,6 +80,31 @@ def salva_grafico_previsione():
     buf.seek(0)
     return buf
 
+def salva_grafico_previsione_turnover():
+    buf = BytesIO()
+    fig, ax = plt.subplots(figsize=(5, 3))
+    
+    # Disegniamo il turnover storico
+    ax.plot(df_turnover["Mese"], df_turnover["Turnover"], label="Turnover Storico", marker="o")
+    
+    # Disegniamo la previsione
+    ax.plot(["Gen 2026", "Feb 2026", "Mar 2026"], previsione_turnover, 
+            label="Previsione Turnover", marker="x", linestyle="dashed")
+    
+    # Linea della soglia critica
+    ax.axhline(y=soglia_turnover, color='r', linestyle='--', label=f"Soglia {soglia_turnover}%")
+    
+    ax.legend()
+    plt.xticks(rotation=45, ha="right")
+    plt.subplots_adjust(bottom=0.2)
+    plt.title("Previsione Turnover")
+
+    plt.savefig(buf, format="png")
+    plt.close(fig)
+    buf.seek(0)
+    return buf
+
+
 # Funzione per generare il report PDF relativo ai dati finanziari
 def genera_pdf():
     buffer = BytesIO()
@@ -249,26 +274,30 @@ def genera_pdf_capitale_umano():
     turnover_medio = df_turnover["Turnover"].mean()
     c.drawString(100, height - 80, f"📊 Turnover Medio: {turnover_medio:.1f}%")
     c.drawString(100, height - 100, f"📈 Turnover Totale (somma): {df_turnover['Turnover'].sum()}%")
-    
+
     if (df_turnover["Turnover"] > soglia_turnover).any():
         c.drawString(100, height - 120, f"⚠️ Attenzione: Il turnover ha superato la soglia di {soglia_turnover}% in alcuni mesi!")
-    
+
     c.setFont("Helvetica-Bold", 14)
     c.drawString(100, height - 160, "Previsione Turnover:")
+    
     y_position = height - 180
     for _, row in df_turnover_pred.iterrows():
         c.drawString(100, y_position, f"{row['Mese']}: {row['Turnover Previsto']}%")
         y_position -= 20
 
-    # Inseriamo il grafico del turnover
-    buf_img = salva_grafico_turnover()
-    img = ImageReader(buf_img)
-    c.drawImage(img, 100, y_position - 220, width=400, height=200)
+    # Inseriamo il grafico della previsione del turnover
+    buf_img_turnover = salva_grafico_previsione_turnover()
+    img_turnover = ImageReader(buf_img_turnover)
+    
+    y_position -= 200
+    c.drawImage(img_turnover, 100, y_position, width=400, height=200)
 
     c.showPage()
     c.save()
     buffer.seek(0)
     return buffer
+
 
 st.subheader("📄 Esportazione Report Capitale Umano")
 pdf_buffer_capitale = genera_pdf_capitale_umano()
@@ -278,3 +307,4 @@ st.download_button(
     file_name="report_capitale_umano.pdf",
     mime="application/pdf",
 )
+
