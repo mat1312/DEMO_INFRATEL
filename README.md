@@ -6,6 +6,14 @@ Questa dashboard interattiva, sviluppata con **Streamlit**, permette di:
 - Identificare **anomalie nei costi** usando lo **Z-Score**.
 - Effettuare una **previsione dei costi futuri** con **Regressione Lineare**.
 - Generare un **report PDF** con dati e grafici.
+Ecco solo la parte aggiornata della descrizione:
+
+## Analisi del Turnover dei Dipendenti
+- Simulazione di dati sul **turnover mensile**.
+- **Modello di Machine Learning** (Regressione Lineare) per prevedere il turnover dei prossimi mesi.
+- **Segnalazione di soglie critiche**: avvisi quando il turnover supera il 15%.
+- **Visualizzazione grafica** dell'andamento storico e delle previsioni future.
+- **Esportazione di un report PDF sul Capitale Umano**, includendo il grafico delle previsioni.
 
 ## 🔧 Tecnologie Utilizzate
 - **Python** (Librerie: `streamlit`, `pandas`, `numpy`, `matplotlib`, `scipy`, `sklearn`)
@@ -32,3 +40,4 @@ Questa dashboard interattiva, sviluppata con **Streamlit**, permette di:
 🚨 **Rilevamento anomalie** nei costi tramite Z-Score.<br>
 📈 **Previsione costi futuri** basata su regressione lineare.<br>
 📄 **Esportazione report PDF** con dati e grafici.<br>
+📊 **Monitoraggio Turnover** con visualizzazione grafica.<br>
